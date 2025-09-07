@@ -1,65 +1,46 @@
+const allBtn = document.getElementsByClassName('add-btn');
+// console.log(allBtn);
 let count = 0;
-
-const allBtn = document.getElementsByClassName("add-btn");
-
 for (const btn of allBtn) {
-  btn.addEventListener("click", function handleSelect(event) {
-    count += 1;
-    const budget = getValue("budget");
+    btn.addEventListener('click', (event) => {
+        count += 1;
+        const placeName = event.target.parentNode.childNodes[1].innerText;
+        // console.log(placeName);
+        const price = event.target.parentNode.childNodes[3].childNodes[1].innerText;
+        // console.log(price);
+        const selectedContainer = document.getElementById("selected-place-container");
+        const li = document.createElement("li");
+        const p = document.createElement("p");
+        p.innerText = placeName;
+        const p2 = document.createElement("p");
+        p2.innerText = price;
+        li.appendChild(p);
+        li.appendChild(p2);
+        selectedContainer.appendChild(li);
 
-    const placeName = event.target.parentNode.childNodes[1].innerText;
-    const price = event.target.parentNode.childNodes[3].childNodes[1].innerText;
-    if (budget - parseInt(price) < 0) {
-      alert("Low Budget Earn Moeny");
-      return;
-    }
-    const selectedContainer = document.getElementById(
-      "selected-place-container"
-    );
-    const li = document.createElement("li");
-    const p = document.createElement("p");
-    p.innerText = placeName;
-
-    const p2 = document.createElement("p");
-    p2.innerText = price;
-
-    li.appendChild(p);
-    li.appendChild(p2);
-    selectedContainer.appendChild(li);
-    totalPrice("total-cost", price);
-    event.target.parentNode.parentNode.style.backgroundColor = "gray";
-    event.target.setAttribute("disabled", true);
-    setInnerText("budget", budget - parseInt(price));
-    setInnerText("cart-count", count);
-  });
+        totalCost("total-cost", parseInt(price));
+        grandTotalCost("grand-total", parseInt(price));
+        setInnerText('cart-count', count);
+    })
 }
 
-function totalPrice(id, value) {
-  const totalCost = document.getElementById("total-cost").innerText;
-  const total = parseInt(totalCost) + parseInt(value);
-  document.getElementById("total-cost").innerText = total;
-  grandTotal("other");
-}
-function grandTotal(category) {
-  console.log(category);
-  const convertTotal = getValue("total-cost");
-  if (category == "bus") {
-    setInnerText("grand-total", convertTotal + 100);
-  } else if (category == "train") {
-    setInnerText("grand-total", convertTotal - 200);
-  } else if (category == "flight") {
-    setInnerText("grand-total", convertTotal + 500);
-  } else {
-    setInnerText("grand-total", convertTotal);
-  }
+function totalCost(id, value) {
+    const totalCost = document.getElementById(id).innerText;
+    const convertedTotalCost = parseInt(totalCost);
+    const sum = convertedTotalCost + parseInt(value);
+    console.log(sum);
+    setInnerText(id, sum);
 }
 
-function getValue(id) {
-  const budgetInnerText = document.getElementById(id).innerText;
-  const budget = parseInt(budgetInnerText);
-  return budget;
+function grandTotalCost(id, value) {
+    const grandTotal = document.getElementById(id).innerText;
+    const convertedGrandTotal = parseInt(grandTotal);
+    const sumTwo = convertedGrandTotal + parseInt(value);
+    console.log(sumTwo);
+    setInnerText(id, sumTwo);
 }
 
 function setInnerText(id, value) {
-  document.getElementById(id).innerText = value;
+    document.getElementById(id).innerText = value;
+    // console.log(id, value);
 }
