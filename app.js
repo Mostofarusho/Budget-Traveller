@@ -14,14 +14,31 @@ for (const btn of allBtn) {
         p.innerText = placeName;
         const p2 = document.createElement("p");
         p2.innerText = price;
+        event.target.parentNode.parentNode.style.backgroundColor = "gray";
         li.appendChild(p);
         li.appendChild(p2);
+
+        const budget = document.getElementById("budget").innerText;
+        const convertedBudget = parseInt(budget);
+        if (convertedBudget - parseInt(price) < 0) {
+            alert("Low Budget Please Earn More");
+            return;
+        }
+        document.getElementById("budget").innerText = convertedBudget - parseInt(price);
+
+
+
         selectedContainer.appendChild(li);
 
         totalCost("total-cost", parseInt(price));
-        grandTotalCost("grand-total", parseInt(price));
+        grandTotalCost("others");
         setInnerText('cart-count', count);
     })
+}
+
+function setInnerText(id, value) {
+    document.getElementById(id).innerText = value;
+    // console.log(id, value);
 }
 
 function totalCost(id, value) {
@@ -32,15 +49,20 @@ function totalCost(id, value) {
     setInnerText(id, sum);
 }
 
-function grandTotalCost(id, value) {
-    const grandTotal = document.getElementById(id).innerText;
-    const convertedGrandTotal = parseInt(grandTotal);
-    const sumTwo = convertedGrandTotal + parseInt(value);
-    console.log(sumTwo);
-    setInnerText(id, sumTwo);
-}
+function grandTotalCost(category) {
+    console.log(category);
+    const grandTotalCost = document.getElementById("total-cost").innerText;
+    const convertedGrandTotalCost = parseInt(grandTotalCost);
+    if (category == "bus") {
+        setInnerText("grand-total", convertedGrandTotalCost + 100);
+    } else if (category == "train") {
+        setInnerText("grand-total", convertedGrandTotalCost - 200);
+    } else if (category == "flight") {
+        setInnerText("grand-total", convertedGrandTotalCost + 500);
+    } else {
+        setInnerText("grand-total", convertedGrandTotalCost);
+    }
 
-function setInnerText(id, value) {
-    document.getElementById(id).innerText = value;
-    // console.log(id, value);
+    // console.log(sumTwo);
+    // setInnerText(id, sumTwo);
 }
